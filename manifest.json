@@ -4,6 +4,5 @@
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f3f7f7",
-  "theme_color": "#0f766e",
-  "description": "সময়মতো ওষুধ, সুস্থতার যত্ন"
+  "theme_color": "#0f766e"
 }

@@ -1,108 +1,12 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f766e">
-  <meta name="description" content="Medicine Reminder BD — সময়মতো ওষুধ, সুস্থতার যত্ন।">
-  <title>Medicine Reminder BD</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="topbar">
-    <div>
-      <div class="brand">💊 Medicine Reminder BD</div>
-      <div class="tagline" data-i18n="tagline">সময়মতো ওষুধ, সুস্থতার যত্ন</div>
-    </div>
-    <button id="langBtn" class="icon-btn" title="Language">বাংলা / EN</button>
-  </header>
-
-  <main class="container">
-    <section class="hero card">
-      <div>
-        <p class="eyebrow" data-i18n="today">আজকের ওষুধ</p>
-        <h1 id="greeting">সুপ্রভাত 👋</h1>
-        <p id="todayDate"></p>
-      </div>
-      <button id="notifyBtn" class="primary" data-i18n="enableNotifications">🔔 নোটিফিকেশন চালু করুন</button>
-    </section>
-
-    <section class="stats">
-      <div class="stat card"><span>💊</span><strong id="totalCount">0</strong><small data-i18n="total">মোট ওষুধ</small></div>
-      <div class="stat card"><span>✅</span><strong id="takenCount">0</strong><small data-i18n="taken">খাওয়া হয়েছে</small></div>
-      <div class="stat card"><span>⏳</span><strong id="pendingCount">0</strong><small data-i18n="pending">বাকি</small></div>
-    </section>
-
-    <section class="card">
-      <div class="section-head">
-        <h2 data-i18n="todaysSchedule">আজকের সময়সূচি</h2>
-        <button id="addBtn" class="primary" data-i18n="addMedicine">＋ ওষুধ যোগ করুন</button>
-      </div>
-      <div id="medicineList" class="medicine-list"></div>
-      <div id="emptyState" class="empty">
-        <div class="empty-icon">💊</div>
-        <h3 data-i18n="noMedicine">এখনও কোনো ওষুধ যোগ করা হয়নি</h3>
-        <p data-i18n="addFirst">প্রথম ওষুধটি যোগ করে রিমাইন্ডার সেট করুন।</p>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="section-head">
-        <h2 data-i18n="progress">আজকের অগ্রগতি</h2>
-        <strong id="progressText">0%</strong>
-      </div>
-      <div class="progress"><div id="progressBar"></div></div>
-      <p class="muted" data-i18n="progressHint">ওষুধ খাওয়ার পর “খাওয়া হয়েছে” চাপুন।</p>
-    </section>
-
-    <section class="grid2">
-      <div class="card">
-        <h2>👨‍👩‍👧 <span data-i18n="family">পরিবার</span></h2>
-        <p class="muted" data-i18n="familyHint">পরিবারের সদস্যদের জন্য আলাদা ওষুধের তালিকা রাখতে পারবেন।</p>
-        <button id="familyBtn" class="secondary" data-i18n="addFamily">পরিবারের সদস্য যোগ করুন</button>
-      </div>
-      <div class="card">
-        <h2>📷 <span data-i18n="prescription">প্রেসক্রিপশন</span></h2>
-        <p class="muted" data-i18n="prescriptionHint">প্রেসক্রিপশনের ছবি আপনার ডিভাইসে সংরক্ষণ করুন।</p>
-        <label class="secondary file-label"><input id="prescriptionInput" type="file" accept="image/*">ছবি নির্বাচন করুন</label>
-        <div id="fileName" class="small"></div>
-      </div>
-    </section>
-
-    <section class="card safety">
-      <h2>⚕️ <span data-i18n="safety">গুরুত্বপূর্ণ</span></h2>
-      <p data-i18n="safetyText">এই অ্যাপ ওষুধ লিখে দেয় বা ডোজ পরিবর্তনের পরামর্শ দেয় না। চিকিৎসকের প্রেসক্রিপশন অনুযায়ী তথ্য যোগ করুন। ডোজ পরিবর্তন, পার্শ্বপ্রতিক্রিয়া বা জরুরি অবস্থায় যোগ্য চিকিৎসকের পরামর্শ নিন।</p>
-    </section>
-  </main>
-
-  <nav class="bottom-nav">
-    <button class="active">🏠<span data-i18n="home">হোম</span></button>
-    <button id="navMedicine">💊<span data-i18n="medicines">ওষুধ</span></button>
-    <button id="navHistory">📅<span data-i18n="history">ইতিহাস</span></button>
-    <button id="navFamily">👨‍👩‍👧<span data-i18n="family">পরিবার</span></button>
-    <button id="navSettings">⚙️<span data-i18n="settings">সেটিংস</span></button>
-  </nav>
-
-  <dialog id="medicineDialog">
-    <form method="dialog" id="medicineForm" class="modal">
-      <div class="modal-head"><h2 data-i18n="newMedicine">নতুন ওষুধ</h2><button value="cancel" class="close">×</button></div>
-      <label data-i18n="medicineName">ওষুধের নাম<input id="name" required placeholder="যেমন: Paracetamol"></label>
-      <div class="row">
-        <label data-i18n="dose">ডোজ<input id="dose" required placeholder="১ ট্যাবলেট"></label>
-        <label data-i18n="time">সময়<input id="time" type="time" required></label>
-      </div>
-      <label data-i18n="food">খাবারের সম্পর্ক
-        <select id="food"><option value="after">খাবারের পরে</option><option value="before">খাবারের আগে</option><option value="none">খাবারের সাথে সম্পর্ক নেই</option></select>
-      </label>
-      <label data-i18n="quantity">বর্তমান পরিমাণ<input id="quantity" type="number" min="1" value="10" required></label>
-      <div class="modal-actions">
-        <button value="cancel" class="secondary" data-i18n="cancel">বাতিল</button>
-        <button value="default" class="primary" data-i18n="save">সংরক্ষণ</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f766e"><meta name="description" content="Medicine Reminder BD"><title>Medicine Reminder BD</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"></head><body>
+<header><div><b>💊 Medicine Reminder BD</b><small>সময়মতো ওষুধ, সুস্থতার যত্ন</small></div><button id="lang">বাংলা / EN</button></header>
+<main><section class="card hero"><div><span>ড্যাশবোর্ড</span><h1 id="greet"></h1><p id="date"></p></div><button id="notify">🔔 নোটিফিকেশন চালু করুন</button></section>
+<section class="stats"><div class="card">💊<b id="total">0</b><small>ওষুধ</small></div><div class="card">✅<b id="taken">0</b><small>খাওয়া হয়েছে</small></div><div class="card">⏳<b id="pending">0</b><small>বাকি</small></div><div class="card">⚠️<b id="low">0</b><small>কম স্টক</small></div></section>
+<section class="card"><div class="head"><h2>💊 আজকের ওষুধ</h2><button id="add">＋ ওষুধ যোগ করুন</button></div><div id="list"></div><div id="empty">💊<h3>কোনো ওষুধ নেই</h3><p>প্রথম ওষুধটি যোগ করুন।</p></div></section>
+<section class="card"><div class="head"><h2>📊 আজকের অগ্রগতি</h2><b id="pct">0%</b></div><div class="bar"><i id="bar"></i></div></section>
+<section class="grid"><div class="card"><h2>👨‍👩‍👧 পরিবার</h2><div id="family"></div><button id="addFamily">+ সদস্য যোগ করুন</button></div><div class="card"><h2>👨‍⚕️ ডাক্তার</h2><div id="doctors"></div><button id="addDoctor">+ ডাক্তার যোগ করুন</button></div></section>
+<section class="grid"><div class="card"><h2>📷 প্রেসক্রিপশন</h2><input id="rx" type="file" accept="image/*"><p id="rxName"></p></div><div class="card"><h2>📅 ইতিহাস</h2><div id="history"></div><button id="clear">ইতিহাস মুছুন</button></div></section>
+<section class="card"><h2>⚙️ সেটিংস</h2><label>নাম<input id="profile"></label><button id="saveProfile">Save</button> <button id="export">Export Backup</button><button id="reset">সব ডেটা মুছুন</button></section>
+<section class="card safety">⚕️ এই অ্যাপ ওষুধ prescribe করে না বা ডোজ পরিবর্তনের পরামর্শ দেয় না। চিকিৎসকের প্রেসক্রিপশন অনুযায়ী তথ্য যোগ করুন। জরুরি অবস্থায় যোগ্য চিকিৎসকের পরামর্শ নিন।</section></main>
+<nav>🏠 হোম　 💊 ওষুধ　 📅 ইতিহাস　 👨‍👩‍👧 পরিবার　 ⚙️ সেটিংস</nav>
+<dialog id="dlg"><form id="form"><div class="head"><h2>নতুন ওষুধ</h2><button type="button" onclick="dlg.close()">×</button></div><label>ওষুধের নাম<input id="name" required></label><div class="row"><label>ডোজ<input id="dose" required placeholder="১ ট্যাবলেট"></label><label>সময়<input id="time" type="time" required></label></div><div class="row"><label>শুরু<input id="start" type="date"></label><label>শেষ<input id="end" type="date"></label></div><label>খাবার<select id="food"><option value="after">খাবারের পরে</option><option value="before">খাবারের আগে</option><option value="none">খাবারের সাথে সম্পর্ক নেই</option></select></label><div class="row"><label>স্টক<input id="qty" type="number" min="1" value="10"></label><label>Low-stock<input id="threshold" type="number" min="0" value="3"></label></div><label>Frequency<select id="freq"><option>Once daily</option><option>Twice daily</option><option>Three times daily</option><option>Custom</option></select></label><button type="button" onclick="dlg.close()">বাতিল</button><button>সংরক্ষণ</button></form></dialog><script src="app.js"></script></body></html>
